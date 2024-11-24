@@ -1,59 +1,32 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Site de Amor</title>
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diário a Dois</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- Tema e Contagem de Tempo -->
-  <div id="time-display">
-    <h1>Tempo Juntos:</h1>
-    <p id="time-count">Carregando...</p>
-  </div>
-
-  <!-- Carrossel de Imagens -->
-  <div class="carousel" id="image-carousel">
-    <button class="prev" onclick="moveImage('prev')">←</button>
-    <div class="carousel-images">
-      <img src="imagem1.jpg" alt="Momento 1">
-      <img src="imagem2.jpg" alt="Momento 2">
-      <img src="imagem3.jpg" alt="Momento 3">
+    <div class="container">
+        <h1>Diário a Dois</h1>
+        <div class="counter-section">
+            <p class="counter">A gente não se vê há:</p>
+            <p class="time" id="counter">00 dias, 00 horas, 00 minutos, 00 segundos</p>
+            <button class="btn" onclick="resetCounter()">Atualizar Contador</button>
+        </div>
+        
+        <div class="diary-section">
+            <h2>Diário de Momentos</h2>
+            <textarea id="diary-entry" placeholder="Escreva algo especial..."></textarea>
+            <button class="btn" onclick="addEntry()">Adicionar ao Diário</button>
+            <div id="entries"></div>
+        </div>
+        
+        <div class="history-section">
+            <h2>Histórico de Encontros</h2>
+            <ul id="history"></ul>
+        </div>
     </div>
-    <button class="next" onclick="moveImage('next')">→</button>
-  </div>
-
-  <!-- Carrossel de Poemas -->
-  <div class="carousel" id="poem-carousel">
-    <button class="prev" onclick="movePoem('prev')">←</button>
-    <div class="carousel-poems">
-      <div class="poem" onclick="openPoemModal(0)">
-        <h3>Poema 1</h3>
-        <p>Resumo do Poema 1...</p>
-      </div>
-      <div class="poem" onclick="openPoemModal(1)">
-        <h3>Poema 2</h3>
-        <p>Resumo do Poema 2...</p>
-      </div>
-      <div class="poem" onclick="openPoemModal(2)">
-        <h3>Poema 3</h3>
-        <p>Resumo do Poema 3...</p>
-      </div>
-    </div>
-    <button class="next" onclick="movePoem('next')">→</button>
-  </div>
-
-  <!-- Modal para Poemas -->
-  <div id="poem-modal" class="modal">
-    <div class="modal-content">
-      <span class="close" onclick="closePoemModal()">&times;</span>
-      <h3 id="poem-title">Título do Poema</h3>
-      <p id="poem-text">Texto do Poema...</p>
-    </div>
-  </div>
-
-  <!-- Script -->
-  <script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>

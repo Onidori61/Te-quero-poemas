@@ -8,25 +8,34 @@
 </head>
 <body>
     <div class="container">
-        <h1>Diário a Dois</h1>
+        <header>
+            <h1>Diário a Dois</h1>
+        </header>
+
+        <!-- Área dos cards -->
+        <div class="cards-container" id="cards-container">
+            <!-- Os cards serão inseridos aqui dinamicamente -->
+        </div>
+
+        <!-- Botão de adicionar novo card -->
+        <button class="btn add-card" onclick="addNewCard()">+</button>
+
+        <!-- Contador de quanto tempo sem se ver -->
         <div class="counter-section">
             <p class="counter">A gente não se vê há:</p>
             <p class="time" id="counter">00 dias, 00 horas, 00 minutos, 00 segundos</p>
-            <button class="btn" onclick="resetCounter()">Atualizar Contador</button>
-        </div>
-        
-        <div class="diary-section">
-            <h2>Diário de Momentos</h2>
-            <textarea id="diary-entry" placeholder="Escreva algo especial..."></textarea>
-            <button class="btn" onclick="addEntry()">Adicionar ao Diário</button>
-            <div id="entries"></div>
-        </div>
-        
-        <div class="history-section">
-            <h2>Histórico de Encontros</h2>
-            <ul id="history"></ul>
         </div>
     </div>
+
+    <!-- Modal para mostrar o conteúdo do diário -->
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <h2 id="modal-title"></h2>
+            <p id="modal-content"></p>
+        </div>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>

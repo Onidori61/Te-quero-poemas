@@ -45,13 +45,13 @@ h1 {
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 20px;
   margin-top: 20px;
+  justify-items: center;
 }
 
-/* Cards quadrados */
 .card {
-  width: 250px; /* Largura fixa */
-  height: 250px; /* Altura fixa para tornar o card quadrado */
-  background-color: #444; /* Cor de fundo escura para os cards */
+  width: 250px;
+  height: 250px;
+  background-color: #444;
   border-radius: 10px;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6);
   cursor: pointer;
@@ -72,17 +72,16 @@ h1 {
 
 .card h2 {
   font-size: 18px;
-  color: #9b4d96; /* Roxo escuro para o título dos cards */
+  color: #9b4d96;
   font-weight: bold;
   margin-top: 10px;
 }
 
-/* Botão de adicionar card */
 .btn.add-card {
-  width: 80px; /* Largura igual aos cards */
-  height: 80px; /* Altura igual aos cards */
-  background-color: rgba(155, 77, 150, 0.3); /* Cor roxa transparente */
-  border: 2px dashed #9b4d96; /* Borda pontilhada para se assemelhar a um card */
+  width: 80px;
+  height: 80px;
+  background-color: rgba(155, 77, 150, 0.3);
+  border: 2px dashed #9b4d96;
   color: #9b4d96;
   font-size: 2rem;
   position: fixed;
@@ -94,14 +93,13 @@ h1 {
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
   cursor: pointer;
   transition: background-color 0.3s ease;
-  border-radius: 10px; /* Bordas arredondadas como o card */
+  border-radius: 10px;
 }
 
 .btn.add-card:hover {
-  background-color: rgba(155, 77, 150, 0.5); /* Aumenta a opacidade no hover */
+  background-color: rgba(155, 77, 150, 0.5);
 }
 
-/* Contador */
 .counter-section {
   margin-top: 30px;
   text-align: center;
@@ -117,7 +115,6 @@ h1 {
   color: #4caf50;
 }
 
-/* Estilo para o Modal */
 .modal {
   display: none;
   position: fixed;
@@ -126,7 +123,7 @@ h1 {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.8); /* Fundo escuro para o modal */
+  background-color: rgba(0, 0, 0, 0.8);
   justify-content: center;
   align-items: center;
 }
@@ -166,7 +163,6 @@ h1 {
   color: #ff6347;
 }
 
-/* Botão de resetar contador */
 .btn.reset-counter {
   background-color: #ff6347;
   color: white;
@@ -181,7 +177,6 @@ h1 {
   background-color: #e55347;
 }
 
-/* Botão de excluir dentro dos cards */
 .card .delete-btn {
   position: absolute;
   top: 10px;
@@ -200,4 +195,10 @@ h1 {
 
 .card .delete-btn:hover {
   background-color: #e55347;
+}
+
+@media (max-width: 768px) {
+  .gallery {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  }
 }

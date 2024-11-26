@@ -20,13 +20,6 @@ function resetCounter() {
     localStorage.setItem('lastSeen', currentDate);
     lastSeen = currentDate;
 
-    // Atualizando o Firebase com a nova data
-    const db = getFirestore(app);
-    const timeRef = doc(db, "counter", "lastSeen");
-    setDoc(timeRef, {
-        lastSeen: currentDate.toISOString()
-    });
-
     updateCounter();
 }
 
@@ -46,27 +39,7 @@ function displayCards() {
     });
 }
 
-// Função para adicionar um novo card
-function addNewCard() {
-    const title = prompt("Qual o título da sua entrada?");
-    const content = prompt("Escreva o conteúdo do diário:");
-
-    if (title && content) {
-        const newCard = { title, content };
-        cardsData.push(newCard);
-        localStorage.setItem('cardsData', JSON.stringify(cardsData));
-        displayCards();
-    }
-}
-
-// Função para excluir um card
-function deleteCard(index) {
-    cardsData.splice(index, 1); // Remove o card pelo índice
-    localStorage.setItem('cardsData', JSON.stringify(cardsData)); // Atualiza o armazenamento
-    displayCards(); // Atualiza a exibição
-}
-
-// Função para abrir o modal
+// Função para abrir o modal com conteúdo do diário
 function openModal(card) {
     document.getElementById('modal-title').textContent = card.title;
     document.getElementById('modal-content').textContent = card.content;
@@ -78,18 +51,27 @@ function closeModal() {
     document.getElementById('modal').style.display = 'none';
 }
 
-// Carregando a última data do Firebase
-const db = getFirestore(app);
-const timeRef = doc(db, "counter", "lastSeen");
-getDoc(timeRef).then((docSnap) => {
-    if (docSnap.exists()) {
-        lastSeen = new Date(docSnap.data().lastSeen);
-        updateCounter();
-    } else {
-        console.log("Nenhum dado encontrado no Firebase, usando data atual.");
-    }
-});
+// Função para adicionar um novo card
+function addNewCard() {
+    const title = prompt('Qual é o título do diário?');
+    const content = prompt('Escreva o conteúdo do diário:');
 
-// Inicializa as visualizações
-setInterval(updateCounter, 1000); // Atualiza o contador a cada segundo
+    const newCard = { title, content };
+    cardsData.push(newCard);
+
+    // Salvar no localStorage
+    localStorage.setItem('cardsData', JSON.stringify(cardsData));
+
+    displayCards();
+}
+
+// Função para excluir um card
+function deleteCard(index) {
+    cardsData.splice(index, 1);
+    localStorage.setItem('cardsData', JSON.stringify(cardsData));
+    displayCards();
+}
+
+// Inicialização
+updateCounter();
 displayCards();

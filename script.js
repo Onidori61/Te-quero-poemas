@@ -19,6 +19,14 @@ function resetCounter() {
     const currentDate = new Date();
     localStorage.setItem('lastSeen', currentDate);
     lastSeen = currentDate;
+
+    // Atualizando o Firebase com a nova data
+    const db = getFirestore(app);
+    const timeRef = doc(db, "counter", "lastSeen");
+    setDoc(timeRef, {
+        lastSeen: currentDate.toISOString()
+    });
+
     updateCounter();
 }
 
@@ -69,6 +77,18 @@ function openModal(card) {
 function closeModal() {
     document.getElementById('modal').style.display = 'none';
 }
+
+// Carregando a última data do Firebase
+const db = getFirestore(app);
+const timeRef = doc(db, "counter", "lastSeen");
+getDoc(timeRef).then((docSnap) => {
+    if (docSnap.exists()) {
+        lastSeen = new Date(docSnap.data().lastSeen);
+        updateCounter();
+    } else {
+        console.log("Nenhum dado encontrado no Firebase, usando data atual.");
+    }
+});
 
 // Inicializa as visualizações
 setInterval(updateCounter, 1000); // Atualiza o contador a cada segundo

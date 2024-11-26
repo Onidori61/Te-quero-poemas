@@ -1,6 +1,24 @@
-// Referência ao Firebase Firestore
-const db = firebase.firestore();
-const cardsRef = db.collection("cards");
+// Importa as funções necessárias do Firebase SDK (versão 9 ou superior)
+import { getFirestore, collection, getDocs, addDoc, deleteDoc, query, where } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+
+// Configuração do Firebase (já fornecida anteriormente)
+const firebaseConfig = {
+    apiKey: "AIzaSyAttMOEYOrE2MqzIWuAozmWOe9G5Ak3V3A",
+    authDomain: "cards-20529.firebaseapp.com",
+    projectId: "cards-20529",
+    storageBucket: "cards-20529.firebasestorage.app",
+    messagingSenderId: "579619995705",
+    appId: "1:579619995705:web:16b4afedf9082e03344de8",
+    measurementId: "G-2BGH0KK5JK"
+};
+
+// Inicializa o Firebase
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+// Referência ao Firestore para a coleção "cards"
+const cardsRef = collection(db, "cards");
 
 // Função para atualizar o contador ao vivo
 function updateCounter() {
@@ -30,12 +48,14 @@ function resetCounter() {
 
 // Carregar cards do Firebase
 function loadCardsFromFirebase() {
-    cardsRef.get().then((querySnapshot) => {
+    getDocs(cardsRef).then((querySnapshot) => {
         cardsData = [];
         querySnapshot.forEach((doc) => {
             cardsData.push(doc.data());
         });
         displayCards(); // Exibe os cards após carregar
+    }).catch((error) => {
+        console.error("Erro ao carregar cards do Firebase: ", error);
     });
 }
 
@@ -76,7 +96,7 @@ function addNewCard() {
     cardsData.push(newCard);
 
     // Salvar no Firebase
-    cardsRef.add(newCard)
+    addDoc(cardsRef, newCard)
         .then(() => {
             displayCards(); // Atualiza os cards na tela após salvar
         })
@@ -88,15 +108,15 @@ function addNewCard() {
 // Excluir um card
 function deleteCard(index) {
     const card = cardsData[index];
-    cardsRef.where("title", "==", card.title).where("content", "==", card.content).get()
-        .then((querySnapshot) => {
-            querySnapshot.forEach((doc) => {
-                doc.ref.delete();
-            });
-        })
-        .catch((error) => {
-            console.error("Erro ao excluir card: ", error);
+    const q = query(cardsRef, where("title", "==", card.title), where("content", "==", card.content));
+
+    getDocs(q).then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+            deleteDoc(doc.ref);
         });
+    }).catch((error) => {
+        console.error("Erro ao excluir card: ", error);
+    });
 
     // Remover o card da lista local
     cardsData.splice(index, 1);

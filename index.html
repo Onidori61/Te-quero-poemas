@@ -20,36 +20,29 @@
         <!-- Botão de adicionar novo card -->
         <button class="btn add-card" onclick="addNewCard()">+</button>
 
-       <!-- Contador de quanto tempo sem se ver -->
-       <div class="counter-section">
-       <p class="counter">A gente não se vê há:</p>
-        <p class="time" id="counter">00 dias, 00 horas, 00 minutos, 00 segundos</p>
-       <button class="btn reset-counter" onclick="resetCounter()">Resetar Contador</button>
-       </div>
-
-     <!-- Modal para mostrar o conteúdo do diário -->
-     <div class="modal" id="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal()">&times;</span>
-            <h3 id="modal-title"></h3>
-            <p id="modal-content"></p>
+        <!-- Contador de quanto tempo sem se ver -->
+        <div class="counter-section">
+            <p class="counter">A gente não se vê há:</p>
+            <p class="time" id="counter">00 dias, 00 horas, 00 minutos, 00 segundos</p>
+            <button class="btn reset-counter" onclick="resetCounter()">Resetar Contador</button>
         </div>
-    </div>
 
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js"></script>
-    
-    <script type="module">
-      // Import the functions you need from the SDKs you need
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
-      import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-analytics.js";
-      // TODO: Add SDKs for Firebase products that you want to use
-      // https://firebase.google.com/docs/web/setup#available-libraries
-    
-      // Your web app's Firebase configuration
-      // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-      const firebaseConfig = {
+        <!-- Modal para mostrar o conteúdo do diário -->
+        <div class="modal" id="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal()">&times;</span>
+                <h3 id="modal-title"></h3>
+                <p id="modal-content"></p>
+            </div>
+        </div>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js"></script>
+
+<script>
+    // Configuração do Firebase
+    const firebaseConfig = {
         apiKey: "AIzaSyAttMOEYOrE2MqzIWuAozmWOe9G5Ak3V3A",
         authDomain: "cards-20529.firebaseapp.com",
         projectId: "cards-20529",
@@ -57,13 +50,13 @@
         messagingSenderId: "579619995705",
         appId: "1:579619995705:web:16b4afedf9082e03344de8",
         measurementId: "G-2BGH0KK5JK"
-      };
-    
-      // Initialize Firebase
-      const app = initializeApp(firebaseConfig);
-      const analytics = getAnalytics(app);
-    </script>
+    };
 
-    <script src="script.js"></script>
-</body>
+    // Inicializa o Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+</script>
+
+        <script src="script.js"></script>
+    </body>
 </html>

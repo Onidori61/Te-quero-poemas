@@ -1,4 +1,4 @@
-// Armazena a data do último encontro
+// Atualizando para suportar exclusão e reset globalmente
 let lastSeen = localStorage.getItem('lastSeen') ? new Date(localStorage.getItem('lastSeen')) : new Date();
 let cardsData = JSON.parse(localStorage.getItem('cardsData')) || [];
 
@@ -14,7 +14,7 @@ function updateCounter() {
     document.getElementById('counter').textContent = `${days} dias, ${hours} horas, ${minutes} minutos, ${seconds} segundos`;
 }
 
-// Função para resetar o contador e adicionar o encontro
+// Função para resetar o contador
 function resetCounter() {
     const currentDate = new Date();
     localStorage.setItem('lastSeen', currentDate);
@@ -22,7 +22,7 @@ function resetCounter() {
     updateCounter();
 }
 
-// Exibe os cards de diário
+// Função para exibir os cards
 function displayCards() {
     const container = document.getElementById('cards-container');
     container.innerHTML = '';
@@ -30,6 +30,7 @@ function displayCards() {
         const cardDiv = document.createElement('div');
         cardDiv.classList.add('card');
         cardDiv.innerHTML = `
+            <button class="delete-btn" onclick="deleteCard(${index})">&times;</button>
             <h2>${card.title}</h2>
         `;
         cardDiv.onclick = () => openModal(card);
@@ -37,7 +38,7 @@ function displayCards() {
     });
 }
 
-// Função para adicionar um novo card ao diário
+// Função para adicionar um novo card
 function addNewCard() {
     const title = prompt("Qual o título da sua entrada?");
     const content = prompt("Escreva o conteúdo do diário:");
@@ -48,6 +49,13 @@ function addNewCard() {
         localStorage.setItem('cardsData', JSON.stringify(cardsData));
         displayCards();
     }
+}
+
+// Função para excluir um card
+function deleteCard(index) {
+    cardsData.splice(index, 1); // Remove o card pelo índice
+    localStorage.setItem('cardsData', JSON.stringify(cardsData)); // Atualiza o armazenamento
+    displayCards(); // Atualiza a exibição
 }
 
 // Função para abrir o modal
@@ -63,6 +71,5 @@ function closeModal() {
 }
 
 // Inicializa as visualizações
-setInterval(updateCounter, 1000);
-updateCounter();
+setInterval(updateCounter, 1000); // Atualiza o contador a cada segundo
 displayCards();

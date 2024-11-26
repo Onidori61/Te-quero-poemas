@@ -1,8 +1,8 @@
-// Atualizando para suportar exclusão e reset globalmente
-let lastSeen = localStorage.getItem('lastSeen') ? new Date(localStorage.getItem('lastSeen')) : new Date();
-let cardsData = JSON.parse(localStorage.getItem('cardsData')) || [];
+// Referência ao Firebase Firestore
+const db = firebase.firestore();
+const cardsRef = db.collection("cards");
 
-// Função para atualizar o contador
+// Função para atualizar o contador ao vivo
 function updateCounter() {
     const now = new Date();
     const timeDiff = now - lastSeen;
@@ -14,16 +14,32 @@ function updateCounter() {
     document.getElementById('counter').textContent = `${days} dias, ${hours} horas, ${minutes} minutos, ${seconds} segundos`;
 }
 
+// Função para atualizar o contador de forma contínua
+function initCounter() {
+    setInterval(updateCounter, 1000); // Atualiza a cada segundo
+    updateCounter(); // Chama de imediato para mostrar o valor ao carregar a página
+}
+
 // Função para resetar o contador
 function resetCounter() {
     const currentDate = new Date();
     localStorage.setItem('lastSeen', currentDate);
     lastSeen = currentDate;
-
     updateCounter();
 }
 
-// Função para exibir os cards
+// Carregar cards do Firebase
+function loadCardsFromFirebase() {
+    cardsRef.get().then((querySnapshot) => {
+        cardsData = [];
+        querySnapshot.forEach((doc) => {
+            cardsData.push(doc.data());
+        });
+        displayCards(); // Exibe os cards após carregar
+    });
+}
+
+// Exibir cards na tela
 function displayCards() {
     const container = document.getElementById('cards-container');
     container.innerHTML = '';
@@ -39,19 +55,19 @@ function displayCards() {
     });
 }
 
-// Função para abrir o modal com conteúdo do diário
+// Abrir modal com conteúdo do diário
 function openModal(card) {
     document.getElementById('modal-title').textContent = card.title;
     document.getElementById('modal-content').textContent = card.content;
     document.getElementById('modal').style.display = 'flex';
 }
 
-// Função para fechar o modal
+// Fechar modal
 function closeModal() {
     document.getElementById('modal').style.display = 'none';
 }
 
-// Função para adicionar um novo card
+// Adicionar um novo card
 function addNewCard() {
     const title = prompt('Qual é o título do diário?');
     const content = prompt('Escreva o conteúdo do diário:');
@@ -59,19 +75,37 @@ function addNewCard() {
     const newCard = { title, content };
     cardsData.push(newCard);
 
-    // Salvar no localStorage
-    localStorage.setItem('cardsData', JSON.stringify(cardsData));
-
-    displayCards();
+    // Salvar no Firebase
+    cardsRef.add(newCard)
+        .then(() => {
+            displayCards(); // Atualiza os cards na tela após salvar
+        })
+        .catch((error) => {
+            console.error("Erro ao adicionar card: ", error);
+        });
 }
 
-// Função para excluir um card
+// Excluir um card
 function deleteCard(index) {
+    const card = cardsData[index];
+    cardsRef.where("title", "==", card.title).where("content", "==", card.content).get()
+        .then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                doc.ref.delete();
+            });
+        })
+        .catch((error) => {
+            console.error("Erro ao excluir card: ", error);
+        });
+
+    // Remover o card da lista local
     cardsData.splice(index, 1);
-    localStorage.setItem('cardsData', JSON.stringify(cardsData));
-    displayCards();
+    displayCards(); // Atualiza os cards após a exclusão
 }
 
 // Inicialização
-updateCounter();
-displayCards();
+let lastSeen = localStorage.getItem('lastSeen') ? new Date(localStorage.getItem('lastSeen')) : new Date();
+let cardsData = [];
+
+initCounter();
+loadCardsFromFirebase(); // Carregar os cards do Firebase
